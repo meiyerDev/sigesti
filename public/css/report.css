@@ -1,0 +1,109 @@
+.head{
+	margin: 10px 10px;
+}
+.icon{
+	width: 80px;
+	float: left;
+}
+.icon2{
+	width: 80px;
+	float: right;
+}
+.head p{
+	margin-top: 5px;
+	font-size: 20px;
+	text-align: center;
+}
+h1{
+	margin-top: 80px;
+	margin-left: 100px;
+	text-align: center;
+}
+.f-right{
+	float: right;
+}
+
+/*--- ESTIlOS TEXTO ---*/
+.bold{
+	font-weight: bold;
+}
+.center{
+	text-align: center;
+}
+.right{
+	text-align: right;
+}
+.justify{
+	text-align: justify;
+}
+/*--- END ---*/
+/*--- ESTILOS CELDA ---*/
+.bg-light{
+	background-color: #ddd;
+}
+.float-left{
+	float: left;
+}
+.height{
+	height: 32px;
+	margin:-1px;
+}
+.border-right{
+	border-right: 1px solid #000;
+}
+.celda{
+	width: 217px;
+	border-right: 1px solid #000;
+	text-align: center;
+}
+#ultima-internet{
+	width: 214px;
+}
+#ultima-user{
+	width: 215px;
+}
+#generacion{
+	width: 433px;
+}
+#eliminacion{
+	width: 210px;
+}
+.servidor{
+	width: 218px;
+}
+.otros{
+	width: 213px;
+	border-left: 1px solid #000;
+}
+.firma{
+	height: 120px;
+	margin:-.8px;
+	padding: 5px;
+	width:466px;
+}
+.margin-2{
+	margin-left: 10px;
+	margin-right: 10px;
+}
+.margin-3{
+	margin-left: 20px; 
+	margin-right: 20px;
+}
+/*--- END ---*/
+/*--- ESTILO TABLA ---*/
+.th{
+	width: 200px;
+}
+table{
+	border-collapse: collapse;
+}
+td{
+	border:  1px solid #000;
+}
+.thead>th{
+	max-width: 160px;
+	min-width: 160px;
+}
+.reporte td{
+	height: 30px;
+}
