@@ -12,5 +12,7 @@
 	<!-- Styles -->
 	<link rel="icon" href="{{asset('img/alcaldia.jpg')}}">
 	<link href="{{ asset('css/app.css') }}" rel="stylesheet">
+	<script src="{{ asset('js/bootstrapjs/jquery-3.3.1.min.js') }}"></script>
+
 </head>
 <body style="background-image: url({{ asset('img/fondo.png') }});" class="body" >

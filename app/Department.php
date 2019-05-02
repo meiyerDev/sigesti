@@ -6,13 +6,16 @@ use Illuminate\Database\Eloquent\Model;
 
 class Department extends Model
 {
-    protected $fillable = [
-    	'department',
+	protected $fillable = [
+		'department',
+		'firstname_director',
+		'lastname_director',
+		'phone',
 		'created_at',
 		'update_at',
-    ];
+	];
 
-    public function desktops()
+	public function desktops()
 	{
 		return $this->hasMany(Desktop::class);
 	}

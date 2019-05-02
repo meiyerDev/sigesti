@@ -78,6 +78,9 @@ class ReportController extends Controller
 		{
 			$department = Department::create([
 				'department' => $request->departmento,
+				'firstname_director' => $request->firstname_director,
+				'lastname_director' => $request->lastname_director,
+				'phone' => $request->phoneDep
 			]);
 		}
 
@@ -235,6 +238,7 @@ class ReportController extends Controller
 	endif;
 
 	return back()->with('succes','Se ha eliminado el registro con exito!');
+	// return response()->json(['succes'=>'Se ha eliminado el registro con exito!', 200]);
 }
 
 }

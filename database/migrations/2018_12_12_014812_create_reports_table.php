@@ -26,7 +26,7 @@ class CreateReportsTable extends Migration
             $table->timestamps();
 
             $table->foreign('article_id')->references('id')->on('articles')->onDelete('cascade');
-            $table->foreign('expert_id')->references('id')->on('experts')->onDelete();
+            $table->foreign('expert_id')->references('id')->on('experts');
         });
     }
 

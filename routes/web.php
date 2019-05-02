@@ -39,3 +39,15 @@ Route::get('/report/reportarPDF/{aticulo}','OtherController@pdf');
 
 /*--- CRUD-REPORTES ---*/
 Route::resource('report', 'ReportController');
+
+/*--- CODIGOS QR ---*/
+Route::get('/cod/{aticulo}','OtherController@dataQr')->name('cod.dataQr');
+
+
+Route::get('/qrcode', function () {
+	
+  	$qr = \QrCode::size(500)->generate('hola');
+	
+	return $qr;
+
+});

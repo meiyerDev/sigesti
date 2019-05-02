@@ -10,93 +10,102 @@ use App\Expert;
 
 class DepartmentController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
-    
-    public function index()
-    {
-        $departments  = Department::paginate(5);
-        $article_count      = Article::all()->count();
-        $article      = Article::all();
-        $impresoras   = Article::where('type', 'Impresora')->count();
-        $experts      = Expert::all();
+	public function __construct()
+	{
+		$this->middleware('auth');
+	}
+	
+	public function index()
+	{
+		$departments  = Department::paginate(5);
+		$article_count      = Article::all()->count();
+		$article      = Article::all();
+		$impresoras   = Article::where('type', 'Impresora')->count();
+		$experts      = Expert::all();
 
-        return view('departments.index')
-        ->with('departments', $departments)
-        ->with('article', $article)
-        ->with('article_count',$article_count)
-        ->with('experts', $experts)
-        ->with('departments', $departments)
-        ->with('impresoras', $impresoras);
+		return view('departments.index')
+		->with('departments', $departments)
+		->with('article', $article)
+		->with('article_count',$article_count)
+		->with('experts', $experts)
+		->with('departments', $departments)
+		->with('impresoras', $impresoras);
 
-    }
+	}
 
-    // public function create()
-    // {
-    //     //
-    // }
+	// public function create()
+	// {
+	//     //
+	// }
 
-    public function store(Request $request)
-    {
-        // dd($request->department);
-        $message = [
-            'department.unique' =>  'El Nombre de Departamento ingresado ya existe.'
-        ];
+	public function store(Request $request)
+	{
+		// dd($request->department);
+		$message = [
+			'department.unique' =>  'El Nombre de Departamento ingresado ya existe.'
+		];
 
-        $validator = Validator::make($request->all(),[
-            'department'    =>  'required|unique:departments'
-        ],$message);
+		$validator = Validator::make($request->all(),[
+			'department'    	=>  'required|unique:departments',
+			'firstname_director'    	=>  'required|min:3',
+			'lastname_director'    	=>  'required|min:3',
+			'phone'             =>	'required'
+		],$message);
 
-        if ($validator->fails()) {
-            return back()
-                ->withErrors($validator)
-                ->withInput();
-        }
+		if ($validator->fails()) {
+			return back()
+				->withErrors($validator)
+				->withInput();
+		}
 
-        $department = Department::create([
-            'department' => $request->department,
-        ]);
+		$department = Department::create([
+			'department' => $request->department,
+			'firstname_director' => $request->firstname_director,
+			'lastname_director' => $request->lastname_director,
+			'phone' => $request->phone
+		]);
 
-        return redirect()->route('department.index')->with('success', 'Se ha registrado con exito!');
-    }
-
-
-    public function show($id)
-    {
-        $department = Department::find($id);
-        // dd($department);
-
-        return view('departments.show')->with('department',$department);
-    }
-
-    public function edit($id)
-    {
-        $department = Department::find($id);
-        // return view('departments.edit')->with('department', $department);
-        return \Response::json(['department' => $department]);
-    }
+		return redirect()->route('department.index')->with('success', 'Se ha registrado con exito!');
+	}
 
 
-    public function update(Request $request, $id)
-    {
-        $department = Department::find($id);
+	public function show($id)
+	{
+		$department = Department::find($id);
+		// dd($department);
 
-        $department->update([
-            'department' => ($request->department)?$request->department:$department->department,
-        ]);
+		return view('departments.show')->with('department',$department);
+	}
 
-        return back()->with('succes', 'Se ha editado de manera exitosa!');
-    }
+	public function edit($id)
+	{
+		$department = Department::find($id);
+		// return view('departments.edit')->with('department', $department);
+		return \Response::json(['department' => $department]);
+	}
 
 
-    public function destroy($id)
-    {
-        $department = Department::find($id);
+	public function update(Request $request, $id)
+	{
+		$department = Department::find($id);
 
-        $department->delete();
+		$department->update([
+			'department' => ($request->department)?$request->department:$department->department,
+			'firstname_director' => ($request->firstname_director)?$request->firstname_director:$firstname_director->firstname_director,
+			'lastname_director' => ($request->lastname_director)?$request->lastname_director:$lastname_director->lastname_director,
+			'phone' => ($request->phone)?$request->phone:$phone->phone,
+		]);
 
-        return redirect('department')->with('succes', 'Se ha eliminado de manera exitosa!');
-    }
+		return back()->with('succes', 'Se ha editado de manera exitosa!');
+	}
+
+
+	public function destroy($id)
+	{
+		$department = Department::find($id);
+
+		$department->delete();
+
+		return redirect('department')->with('succes', 'Se ha eliminado de manera exitosa!');
+	}
 }

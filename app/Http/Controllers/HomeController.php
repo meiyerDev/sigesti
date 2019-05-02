@@ -43,6 +43,7 @@ class HomeController extends Controller
 		// dd($article_count);
 
 		return view('home')
+		->with('i',1)
 		->with('reports',$report)
 		->with('article_count',$article_count)
 		->with('article',$article)
@@ -53,10 +54,9 @@ class HomeController extends Controller
 		}else{
 			$expert = Expert::where('user_id',\Auth::user()->id)->first()->reports;
 
-			$i = 1;
 			return view('reports.expertReport')
 			->with('experts', $expert)
-			->with('i', $i);
+			->with('i', 1);
 		}
 
 

@@ -57,23 +57,23 @@
 						<tbody>
 							@forelse( $article as $articulo )
 							<tr>
-								<th scope="row">{{ $articulo->id }}</th>
+								<th scope="row">{{ $i++ }}</th>
 								<td>{{ $articulo->type }}@if($articulo->name_otro)
 									- {{$articulo->name_otro}}@endif</td>
 									<td>{{ $articulo->model }}</td>
 									<td>{{ $articulo->brand }}</td>
 									<td>{{ $articulo->serial }}</td>
 									<td>{{ $articulo->responsable->person->first_name }} {{ $articulo->responsable->person->last_name }}</td>
-									<td>{{ $articulo->department->department }}</td>
+									<td>{{ $articulo->department->department }} - {{ $articulo->department->phone }}</td>
 									<td>@if ( $articulo->report->expert != null ) {{ $articulo->report->expert->person->first_name }} {{ $articulo->report->expert->person->last_name }} @else No está definido. @endif </td>
 									<td>
-										<button class="btn btn-info btn-sm" title="Información" data-toggle="modal" data-target="#modalInfo{{$articulo->id}}">
+										<button class="btn btn-info btn-sm btnInf" title="Información" data-toggle="modal" data-target="#modalInfo">
 											<i class="fas fa-qrcode"></i>
 										</button>
 									<!--<button class="btn btn-warning btn-sm" class="edit-report" data-toggle="modal" data-target="#modalModify">
 										<i class="fas fa-edit"></i>
 									</button>-->
-									<button class="btn btn-danger btn-sm delete-report" title="Eliminar" data-toggle="modal" data-target="#modalDelete">
+									<button class="btn btn-danger btn-sm delete-report" data-id="{{ $articulo->id }}" title="Eliminar" data-toggle="modal" data-target="#modalDelete">
 										<i class="fas fa-trash"></i>
 									</button>
 									<button class="btn btn-secondary btn-sm" onclick="window.open('/report/comprobante/{{ $articulo->id }}','Comprobante')" id="comprobante-report" title="Comprobante">
@@ -88,34 +88,6 @@
 								</td>
 								
 								<td style="visibility: collapse;">{{$articulo->id}}</td>
-								{{-- MODAL-INFO --}}
-								<div class="modal fade" id="modalInfo{{$articulo->id}}" tabindex="-1" role="dialog" aria-labelledby="modalInfoLabel" aria-hidden="true">
-									<div class="modal-dialog" role="document">
-										<div class="modal-content">
-											<div class="modal-header" >
-												<h5 class="modal-title" id="modalExpertLabel">Código QR del artículo</h5>
-												<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-													<span aria-hidden="true">&times;</span>
-												</button>
-											</div>
-											<div class="modal-body">
-												<div class="d-flex flex-column mb-2">
-													<div class="d-flex justify-content-center">
-														{{ $articulo->model }} {{ $articulo->brand }}
-													</div>
-													<div class="d-flex justify-content-center">
-														{!! QrCode::size(300)->generate($articulo); !!}
-													</div>
-												</div>
-											</div>
-											<div class="modal-footer">
-												<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-											</div>
-										</div>
-									</div>
-								</div>
-								{{-- /MODAL-INFO --}}
-
 							</tr>
 							@empty
 							<div class="alert alert-warning p-0">
@@ -133,7 +105,31 @@
 	</div>
 
 </div>
-
+{{-- MODAL-INFO --}}
+<div class="modal fade" id="modalInfo" tabindex="-1" role="dialog" aria-labelledby="modalInfoLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header" >
+				<h5 class="modal-title" id="modalExpertLabel">Código QR del artículo</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<div class="d-flex flex-column mb-2">
+					<div class="d-flex justify-content-center" id="titleInfo">
+					</div>
+					<div class="d-flex justify-content-center" id="bodyInfo">
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+			</div>
+		</div>
+	</div>
+</div>
+{{-- /MODAL-INFO --}}
 
 {{-- MODAL-EXPERT --}}
 <div class="modal fade" id="modalExpert" tabindex="-1" role="dialog" aria-labelledby="modalExpertLabel" aria-hidden="true">
@@ -381,9 +377,35 @@
 								<option value="nuevo">Nuevo</option>
 							</select>
 						</div>
-						<div class="form-group" style="display: none;" id="nue_departmento">
-							<label for="department">Nuevo Departamento:</label>
-							<input type="text" class="form-control" value="{{old('departmento')}}" name="departmento" id="nuevo_departmento" placeholder="Ingrese Departamento" pattern="^[a-zA-Záéíóúñ]+" title="Ingrese solo letras.">
+						<div  style="display: none;" id="nue_departmento">
+							<div class="form-group">
+								<label for="department">Nuevo Departamento:</label>
+								<div class="input-group">
+									<div class="input-group-addon"><i class="fas fa-building"></i></div>
+									<input type="text" class="form-control" value="{{old('departmento')}}" name="departmento" id="nuevo_departmento" placeholder="Ingrese Departamento" pattern="^[a-zA-Záéíóúñ]+" title="Ingrese solo letras.">
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="department">Nombre del Director:</label>
+								<div class="input-group">
+									<div class="input-group-addon"><i class="fas fa-user"></i></div>
+									<input type="text" class="form-control" pattern="^[a-zA-Záéíóúñ]+" title="Ingrese solo letras." name="firstname_director" value="{{old('firstname_director')}}" placeholder="Ingrese Nombre del Director de Departamento">
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="department">Apellido del Director:</label>
+								<div class="input-group">
+									<div class="input-group-addon"><i class="fas fa-user"></i></div>
+									<input type="text" class="form-control" pattern="^[a-zA-Záéíóúñ]+" title="Ingrese solo letras." name="lastname_director" value="{{old('lastname_director')}}" placeholder="Ingrese Apellido del Director de Departamento">
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="department">Teléfono de Departamento:</label>
+								<div class="input-group">
+									<div class="input-group-addon"><i class="fas fa-phone"></i></div>
+									<input type="text" class="form-control"  name="phoneDep" value="{{old('phone')}}" pattern="^[0-9]+" title="Ingrese solo numeros." placeholder="Ingrese numero de Teléfono del Departamento">
+								</div>
+							</div>
 						</div>
 					</div><br>
 
@@ -403,4 +425,9 @@
 	<h4 class="my-5 text-center">{{$cant}}</h4>
 </div>
 @endif
+
+<script>
+	
+</script>
+
 @include('layouts.footer')

@@ -169,7 +169,9 @@ return [
         'departmento'           =>  'Nuevo Departamento',
         'name_otro'             =>  'Nombre del Articulo',
         'user'                  =>  'Usuario',
-        'password'              =>  'Contraseña'
+        'password'              =>  'Contraseña',
+        'firstname_director'    =>  'Nombre del Director',
+        'lastname_director'     =>  'Apellido del Director',
     ],
 
 ];

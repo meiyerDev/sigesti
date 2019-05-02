@@ -46,7 +46,10 @@ class DatosRequest extends FormRequest
 			'so'					=>	['required_if:type,Cpu','required_if:type,Monitor-Desktop'],
 			'memory_video'			=>	['nullable','string'],
 			'department'			=>	['required'],
-			'departmento'			=>	['nullable','required_if:department,nuevo','unique:departments,department','string','max:50','min:3']
+			'departmento'			=>	['nullable','required_if:department,nuevo','unique:departments,department','string','max:50','min:3'],
+			'firstname_director'   	=>  ['required_if:department,nuevo|min:3'],
+			'lastname_director'    	=>  ['required_if:department,nuevo|min:3'],
+			'phoneDep'             	=>	['required_if:department,nuevo']
 		];
 	}
 
@@ -60,7 +63,6 @@ class DatosRequest extends FormRequest
 	{
 		return [
 			'identity'      		=>  'Cedula',
-			
 		];
 	}
 }

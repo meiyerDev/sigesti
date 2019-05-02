@@ -150,18 +150,32 @@ $(() => {
 	}),
 
 	$('.delete-report').click(function () {
-		var row = $(this).parent().parent()
-		var td  = row.children()
-
-		var id = td[9].innerHTML
+		var id = $(this).data("id")
 		document.getElementById('delete-r').action='http://127.0.0.1:8000/report/'+id
 		document.getElementById('delete-r').name='destroy'+id
 	}),
+	// $('#delete-r').submit(function(e) {
+	// 	e.preventDefault()
+	// 	var id  = $(this).attr('name').substring(7)
+	// 	var token = $('input[name="_token"]').data("token")
+	// 	$.ajax({
+	// 		method: 'get',
+	// 		url : '/report/'+id,
+	// 		Type: 'DELETE',
+	// 		dataType: 'JSON',
+	// 		data : { "id": id, "_method":'DELETE',"_token":token },
+	// 		success:function(succ) {
+	// 			console.log(succ)
+	// 		}
+	// 	})
+		
+	// })
 
 	$('.expert-report').click(function () {
 		var row = $(this).parent().parent()
 		var td = row.children()
 		var id = td[9].innerHTML
+
 		// var expert = td[7].innerHTML
 		$('#add-expert').attr('action', 'http://127.0.0.1:8000/report/'+id)
 	}),
@@ -238,9 +252,10 @@ $(() => {
 	}),
 
 	$('.edit-department').click(function() {
-		var row = $(this).parent().parent()
-		var td  = row.children()
-		var id = td[4].innerHTML
+		// var row = $(this).parent().parent()
+		// var td  = row.children()
+		var id = $(this).data("id")
+
 
 		$.ajax({
 			method : 'get',
@@ -253,6 +268,9 @@ $(() => {
 			console.log(success.department)
 			document.getElementById('modify').action='http://127.0.0.1:8000/department/'+id
 			$('#department').val(success.department.department)
+			$('#primer').val(success.department.firstname_director)
+			$('#segundo').val(success.department.lastname_director)
+			$('#phone').val(success.department.phone)
 		})
 
 		.fail((error) => {
@@ -260,10 +278,10 @@ $(() => {
 		})
 	}),
 	$('.delete-department').click(function () {
-		var row = $(this).parent().parent()
-		var td  = row.children()
+		// var row = $(this).parent().parent()
+		// var td  = row.children()
 
-		var id = td[0].innerHTML
+		var id = $(this).data("id")
 		document.getElementById('delete').action='http://127.0.0.1:8000/department/'+id
 		document.getElementById('delete').name='destroy'+id
 	}),
@@ -276,8 +294,27 @@ $(() => {
 		}else{
 			$('#boton-editar').val('Articulo')
 		}
-	})
+	}),
+	$('.btnInf').click(function() {
+		var row = $(this).parent().parent()
+		var td  = row.children()
 
+		var id = td[9].innerHTML
+
+		$.ajax({
+			method : 'get',
+			url : 'http://127.0.0.1:8000/cod/'+id,
+			// dataType: 'text',
+			data : $.param({ id: id })
+		})
+		.done((success)=>{
+			$('#bodyInfo').html(success.qr)
+			$('#titleInfo').html('Tipo:'+success.a.type+' Modelo:'+success.a.model+' Marca:'+success.a.brand)
+		})
+		.fail((error)=>{
+			console.log(error)
+		})
+	})
 })
 
 

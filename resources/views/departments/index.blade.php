@@ -43,32 +43,35 @@
 							<tr>
 								<th>Nro</th>
 								<th>DEPARTAMENTO</th>
+								<th>DIRECTOR</th>
+								<th>TELEFONO</th>
 								<th>CREADO</th>
 								<th>ACCION</th>
 							</tr>
 						</thead>
 						<tbody>
 							@forelse($departments as $departamento)
-								<tr>
-									<td>{{ $departamento->id }}</td>
-									<td>{{ $departamento->department }}</td>
-									<td>{{ $departamento->created_at }}</td>
-									<td>
-										<!-- Abre un modal con el input y sus datos precargados para ser editado -->
-										<button type="button" class="btn btn-warning btn-sm edit-department" data-toggle="modal" data-target="#editmodal">
-											<i class="fas fa-edit"></i>
-										</button>
-										<!-- Debe abrir un modal para confirmar que se desea eliminar -->
-										<button type="button" class="btn btn-danger btn-sm delete-department" data-toggle="modal" data-target="#delmodal">
-											<i class="fas fa-trash"></i>
-										</button>
-									</td>
-									<td style="visibility: collapse;">{{$departamento->id}}</td>
-								</tr>
+							<tr>
+								<td>{{ $departamento->id }}</td>
+								<td>{{ $departamento->department }}</td>
+								<td>{{ $departamento->firstname_director }} {{ $departamento->lastname_director }}</td>
+								<td>{{ $departamento->phone }}</td>
+								<td>{{ $departamento->created_at }}</td>
+								<td>
+									<!-- Abre un modal con el input y sus datos precargados para ser editado -->
+									<button type="button" class="btn btn-warning btn-sm edit-department" data-toggle="modal" data-target="#editmodal" data-id="{{ $departamento->id }}">
+										<i class="fas fa-edit"></i>
+									</button>
+									<!-- Debe abrir un modal para confirmar que se desea eliminar -->
+									<button type="button" class="btn btn-danger btn-sm delete-department" data-toggle="modal" data-target="#delmodal" data-id="{{ $departamento->id }}">
+										<i class="fas fa-trash"></i>
+									</button>
+								</td>
+							</tr>
 							@empty
-								<div class="alert alert-warning p-0">
-									<h4 class="text-center my-4">No existen datos registrados</h4>
-								</div>
+							<div class="alert alert-warning p-0">
+								<h4 class="text-center my-4">No existen datos registrados</h4>
+							</div>
 							@endforelse
 						</tbody>
 					</table>
@@ -130,6 +133,27 @@
 							<input type="text" class="form-control" autofocus name="department" value="{{old('department')}}" placeholder="Ingrese Departamento">
 						</div>
 					</div>
+					<div class="form-group">
+						<label for="department">Nombre del Director:</label>
+						<div class="input-group">
+							<div class="input-group-addon"><i class="fas fa-user"></i></div>
+							<input type="text" class="form-control" pattern="^[a-zA-Záéíóúñ]+" title="Ingrese solo letras." name="firstname_director" value="{{old('firstname_director')}}" placeholder="Ingrese Nombre del Director de Departamento">
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="department">Apellido del Director:</label>
+						<div class="input-group">
+							<div class="input-group-addon"><i class="fas fa-user"></i></div>
+							<input type="text" class="form-control" pattern="^[a-zA-Záéíóúñ]+" title="Ingrese solo letras." name="lastname_director" value="{{old('lastname_director')}}" placeholder="Ingrese Apellido del Director de Departamento">
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="department">Teléfono de Departamento:</label>
+						<div class="input-group">
+							<div class="input-group-addon"><i class="fas fa-phone"></i></div>
+							<input type="text" class="form-control"  name="phone" value="{{old('phone')}}" pattern="^[0-9]+" title="Ingrese solo numeros." placeholder="Ingrese numero de Teléfono del Departamento">
+						</div>
+					</div>
 
 				</div>
 				<div class="modal-footer">
@@ -157,17 +181,41 @@
 
 					<div class="form-group">
 						<label for="department">Departamento:</label>
-						<input type="text" class="form-control" name="department" id="department" placeholder="Ingrese Departamento" value="">
+						<div class="input-group">
+							<div class="input-group-addon"><i class="fas fa-building"></i></div>
+							<input type="text" class="form-control" name="department" id="department" placeholder="Ingrese Departamento" value="">
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="department">Nombre del Director:</label>
+						<div class="input-group">
+							<div class="input-group-addon"><i class="fas fa-user"></i></div>
+							<input type="text" class="form-control" pattern="^[a-zA-Záéíóúñ]+" title="Ingrese solo letras." name="firstname_director" id="primer" value="{{old('firstname_director')}}" placeholder="Ingrese Nombre del Director de Departamento">
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="department">Apellido del Director:</label>
+						<div class="input-group">
+							<div class="input-group-addon"><i class="fas fa-user"></i></div>
+							<input type="text" class="form-control" pattern="^[a-zA-Záéíóúñ]+" title="Ingrese solo letras." name="lastname_director" id="segundo" value="{{old('lastname_director')}}" placeholder="Ingrese Apellido del Director de Departamento">
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="department">Teléfono de Departamento:</label>
+						<div class="input-group">
+							<div class="input-group-addon"><i class="fas fa-phone"></i></div>
+							<input type="text" class="form-control" id="phone" name="phone" value="{{old('phone')}}" pattern="^[0-9]+" title="Ingrese solo numeros." placeholder="Ingrese numero de Teléfono del Departamento">
+						</div>
 					</div>
 
-				<div class="modal-footer">
-					<button type="submit" name="boton" class="btn btn-primary"><i class="fas fa-edit mr-2"></i>Guardar</button>
-				</div>
-			</form>
+					<div class="modal-footer">
+						<button type="submit" name="boton" class="btn btn-primary"><i class="fas fa-edit mr-2"></i>Editar</button>
+					</div>
+				</form>
+			</div>
 		</div>
 	</div>
-</div>
 
 
 
-@include('layouts.footer')
+	@include('layouts.footer')
