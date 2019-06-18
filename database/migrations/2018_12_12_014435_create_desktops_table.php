@@ -17,7 +17,7 @@ class CreateDesktopsTable extends Migration
             $table->increments('id');
             $table->unsignedInteger('cpu_id');
             $table->unsignedInteger('monitor_id');
-            $table->unsignedInteger('department_id');
+            $table->unsignedInteger('department_id')->nullable();
             $table->timestamps();
 
             $table->foreign('cpu_id')->references('id')->on('cpus')->onDelete('cascade');

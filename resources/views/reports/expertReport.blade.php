@@ -15,7 +15,7 @@
 				<form action="" id="reporteTecnico" method="POST">
 					<div class="modal-body">
 						{{csrf_field()}}
-						{{method_field('PATCH')}}
+						{{method_field('PUT')}}
 						<input type="hidden" name="confirmed" value="1">
 						<div class="row">
 							<div class="col">
@@ -144,7 +144,7 @@
 										<i class="fas fa-file-pdf"></i>
 									</button>
 								</td>
-								<td style="visibility: collapse;">{{$experto->id}}</td>
+								<td style="visibility: collapse;">{{$experto->article->report->id}}</td>
 							</tr>
 							@empty
 							<h2>No tiene Equipos Asignados.</h2>

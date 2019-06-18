@@ -57,7 +57,14 @@ class RequestsController extends Controller
 		}
 
 		$req = Req::create(['responsable_id'=>($request->responsable == 'nuevo')?$respon->id:$request->responsable,'observation' => $request->observation, 'expert_id' => $tecnico,'article_id'=>$article->id]);
+		if ($article->monitor) {
+			$req = Req::create(['responsable_id'=>($request->responsable == 'nuevo')?$respon->id:$request->responsable,'observation' => $request->observation, 'expert_id' => $tecnico,'article_id'=>$article->monitor->desktop->cpus->article->id]);
 		
+		}elseif ($article->cpus) {
+			$req = Req::create(['responsable_id'=>($request->responsable == 'nuevo')?$respon->id:$request->responsable,'observation' => $request->observation, 'expert_id' => $tecnico,'article_id'=>$article->cpus->desktop->monitor->article->id]);
+		
+		}
+
 		$report = Report::create([
 			'article_id' => $article->id,
 			'request'    => $request->requested,
@@ -68,8 +75,9 @@ class RequestsController extends Controller
 		if ($article->type == 'Monitor-Desktop')
 		{
 			$report_cpu = Report::create([
-				'article_id'  => $article_cpu->id,
+				'article_id'  => $article->monitor->desktop->cpus->article->id,
 				'request' 	  => $request->requested,
+				'confirmed'	 =>	0,
 				'description' => ( $request->description ) ? $request->description : 'NULL',
 				'expert_id'   => $tecnico
 			]);
@@ -97,6 +105,11 @@ class RequestsController extends Controller
 			$responsable->person->delete();
 			$a->report->delete();
 		}else{
+			if ($a->monitor) {
+				$a->monitor->desktop->cpus->article->request->delete();
+			}elseif ($a->cpus) {
+				$a->cpus->desktop->monitor->article->request->delete();
+			}
 			$a->request->delete();
 			$a->report->delete();
 		}

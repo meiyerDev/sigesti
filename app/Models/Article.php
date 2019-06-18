@@ -74,14 +74,14 @@ class Article extends Eloquent
 		return $this->hasMany(\App\Models\Cartridge::class);
 	}
 
-	public function cpuses()
+	public function cpus()
 	{
-		return $this->hasMany(\App\Models\Cpus::class);
+		return $this->hasOne(\App\Models\Cpus::class);
 	}
 
-	public function monitors()
+	public function monitor()
 	{
-		return $this->hasMany(\App\Models\Monitor::class);
+		return $this->hasOne(\App\Models\Monitor::class);
 	}
 
 	public function report()

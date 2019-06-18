@@ -5,7 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Expert;
 use App\Models\Article;
-use App\Models\Request as Req;
+use App\Models\Report;
+use App\Models\Reqcuest as Req;
 
 class OtherController extends Controller
 {
@@ -13,6 +14,21 @@ class OtherController extends Controller
 	public function __construct()
 	{
 		$this->middleware('auth');
+	}
+
+	public function crearReporte(Request $request,$id)
+	{
+		if ($request->boton == "reporteTecnico") {
+			$report = Report::find($id);
+			if ($report->article->monitor) {
+				$report->article->monitor->desktop->cpus->article->report->update($request->all());
+			}elseif ($report->article->cpus) {
+				$report->article->cpus->desktop->monitor->article->report->update($request->all());
+			}
+			$report->update($request->all());
+			// dd($report);
+			return back()->with('succes', 'Se ha modificado de manera exitosa');
+		}
 	}
 
 	public function assignment(Request $request)

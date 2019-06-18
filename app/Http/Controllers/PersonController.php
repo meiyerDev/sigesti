@@ -88,16 +88,6 @@ class PersonController extends Controller
 
 	public function update(Request $request, $id)
 	{
-		if ($request->boton == "reporteTecnico") {
-			$report = Report::find($id);
-			// dd($report);
-			$report->update($request->all());
-			return back()->with('succes', 'Se ha modificado de manera exitosa');
-
-		}
-
-		// Validar inputs de Update Técnicos
-		
 		
 		$expert = Person::where('identity',$id)->first();
 		$expert->update([

@@ -75,91 +75,19 @@ class ReportController extends Controller
 			]);
 		}
 
-		// if ($request->department == 'nuevo')
-		// {
-		// 	$department = Department::create([
-		// 		'department' => $request->departmento,
-		// 		'firstname_director' => $request->firstname_director,
-		// 		'lastname_director' => $request->lastname_director,
-		// 		'phone' => $request->phoneDep
-		// 	]);
-		// }
-
-		// $type    = $request->type;
-		// $article = Article::create([
-		// 	'model' 		 => $request->model,
-		// 	'brand' 		 => $request->brand,
-		// 	'serial' 		 => $request->serial,
-		// 	'observation'	 => $request->observation,
-		// 	'responsable_id' => ( $request->responsable == 'nuevo' ) ? $respon->id : $request->responsable,
-		// 	'department_id'  => ( $request->department  == 'nuevo' ) ? $department->id : $request->department,
-		// 	'type' 			 => $request->type,
-		// 	'name_otro'		 => ($request->name_otro)?$request->name_otro:''
-		// ]);
-
 		$report = Report::create([
 			'article_id' => $article->id,
 			'request'    => $request->requested,
 		]);
 
-		// if ($type == 'Monitor' || $type == 'Monitor-Desktop')
-		// {
-		// 	$monitor = Monitor::create([
-		// 		'article_id' => $article->id,
-		// 		'inche' 	 => $request->inche,
-		// 	]);
-		// }
-
-		// if ($type == 'Cpu')
-		// {
-		// 	$cpu = Cpu::create([
-		// 		'ram' 		   => $request->ram,
-		// 		'processor'    => $request->processor,
-		// 		'so' 		   => $request->so,
-		// 		'memory_video' => ($request->memory_video)?$request->memory_video:'',
-		// 		'article_id'   => $article->id
-		// 	]);
-		// }
-
 		if ($type == 'Monitor-Desktop')
 		{
-			// $article_cpu = Article::create([
-			// 	'model' 		 => $request->model_cpu,
-			// 	'brand' 		 => $request->brand_cpu,
-			// 	'serial' 		 => $request->serial_cpu,
-			// 	'observation' 	 => $request->observation_cpu,
-			// 	'department_id'  => ( $request->department  == 'nuevo' ) ? $department->id : $request->department,
-			// 	'responsable_id' => ( $request->responsable == 'nuevo' ) ? $respon->id : $request->responsable,
-			// 	'type' 			 => 'Cpu-Desktop'
-			// ]);
-
-			// $cpu = Cpu::create([
-			// 	'ram' 		   => $request->ram,
-			// 	'processor'    => $request->processor,
-			// 	'so' 		   => $request->so,
-			// 	'memory_video' => $request->memory_video,
-			// 	'article_id'   => $article_cpu->id
-			// ]);
-
-			// $desktop = Desktop::create([
-			// 	'cpu_id' 		=> $cpu->id,
-			// 	'monitor_id' 	=> $monitor->id,
-			// 	'department_id' => $article->department_id
-			// ]);;
-
 			$report_cpu = Report::create([
 				'article_id'  => $article_cpu->id,
 				'request' 	  => $request->requested,
 				'description' => ( $request->description ) ? $request->description : 'NULL',
 			]);
 		}
-
-		// if ($type == 'Cartucho') {
-		// 	$cartucho = Cartridge::create([
-		// 		'code'	=>	$request->code,
-		// 		'article_id'	=>	$article->id
-		// 	]);
-		// }
 
 
 		return redirect('home')->with('succes', 'Se ha registrado de manera exitosa!');
@@ -215,6 +143,21 @@ class ReportController extends Controller
 			]);
 			$article->experts()->attach($request->expert_id);
 			$article->request->update(['expert_id' => $request->expert_id]);
+			
+			if ($article->monitor) {
+				$article->monitor->desktop->cpus->article->report->update([
+				'expert_id' => $request->expert_id
+				]);
+				$article->monitor->desktop->cpus->article->experts()->attach($request->expert_id);
+				$article->monitor->desktop->cpus->article->request->update(['expert_id' => $request->expert_id]);
+			
+			}elseif ($article->cpus) {
+				$article->cpus->desktop->monitor->article->report->update([
+				'expert_id' => $request->expert_id
+				]);
+				$article->cpus->desktop->monitor->article->experts()->attach($request->expert_id);
+				$article->cpus->desktop->monitor->article->request->update(['expert_id' => $request->expert_id]);
+			}
 		}
 
 		return redirect('home')->with('succes','Se ha asignado el técnico de manera exitosa!');

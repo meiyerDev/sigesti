@@ -179,7 +179,7 @@
 							<label for="type">Tipo de Artículo:</label>
 							<select name="type" id="tipo" class="form-control" value="{{old('type')}}">
 								<option disabled selected>Seleccione</option>
-								{{-- <option value="Monitor-Desktop">Desktop (CPU-Monitor)</option> --}}
+								<option value="Monitor-Desktop">Desktop (CPU-Monitor)</option>
 								<option value="Monitor">Monitor</option>
 								<option value="Cpu">CPU</option>
 								<option value="Laptop">Laptop</option>

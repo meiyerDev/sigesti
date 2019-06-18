@@ -174,8 +174,6 @@ $(() => {
 		var row = $(this).parent().parent()
 		var td = row.children()
 		var id = td[9].innerHTML
-		alert(id)
-
 		// var expert = td[7].innerHTML
 		$('#add-expert').attr('action', 'http://'+location.host+'/report/'+id)
 	}),
@@ -201,7 +199,7 @@ $(() => {
 		})
 		.done((success) => {
 			console.log(success.expert)
-			$('#reporteTecnico').attr('action', 'http://'+location.host+'/expert/'+id)
+			$('#reporteTecnico').attr('action', 'http://'+location.host+'/reporte/'+id)
 			$('#maintenance').val(success.expert.maintenance)
 			$('#inter').val(success.expert.internet)
 			$('#usuarios').val(success.expert.users)

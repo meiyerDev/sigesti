@@ -10,7 +10,7 @@ use App\Models\Department;
 use App\Models\Article;
 use App\Models\Expert;
 use App\Models\Monitor;
-use App\Models\Cpu;
+use App\Models\Cpus;
 use App\Models\Cartridge;
 use App\Models\Desktop;
 use App\Models\Report;
@@ -35,9 +35,6 @@ class InventoryController extends Controller
 			$departments  = Department::all();
 			$experts 	  = Expert::all();
 			$responsable 	  = Responsable::all();
-		// $impresoras	  = Article::where('type', 'Impresora')->count();
-		// $article_count = $impresoras + $article->count();
-		// dd($article_count);
 
 			return view('inventory.index')
 			->with('i',1)
@@ -47,7 +44,6 @@ class InventoryController extends Controller
 			->with('experts', $experts)
 			->with('departments', $departments)
 			->with('responsables', $responsable);
-		// ->with('impresoras', $impresoras);
 		}
 	}
 
@@ -122,13 +118,10 @@ class InventoryController extends Controller
 				'model' 		 => $request->model_cpu,
 				'brand' 		 => $request->brand_cpu,
 				'serial' 		 => $request->serial_cpu,
-				'observation' 	 => $request->observation_cpu,
-				'department_id'  => ( $request->department  == 'nuevo' ) ? $department->id : $request->department,
-				'responsable_id' => ( $request->responsable == 'nuevo' ) ? $respon->id : $request->responsable,
 				'type' 			 => 'Cpu-Desktop'
 			]);
 
-			$cpu = Cpu::create([
+			$cpu = Cpus::create([
 				'ram' 		   => $request->ram,
 				'processor'    => $request->processor,
 				'so' 		   => $request->so,
@@ -194,11 +187,11 @@ class InventoryController extends Controller
 
 		if ($article->monitor && $article->monitor->desktop){
 
-			$article->monitor->desktop->first()->cpu->article->delete();
+			$article->monitor->desktop->cpus->article->delete();
 
-		}elseif ($article->cpu && $article->cpu->desktop->count() != 0){
+		}elseif ($article->cpus && $article->cpus->desktop){
 
-			$article->cpu->desktop->first()->monitor->article->delete();
+			$article->cpus->desktop->monitor->article->delete();
 
 		}
 
@@ -232,6 +225,14 @@ class InventoryController extends Controller
 			]);
 		}
 		$article->update(['department_id'=>($request->departmento)?$department->id:$request->department]);
+		if ($article->monitor) {
+			$article->monitor->desktop->update(['department_id'=>($request->departmento)?$department->id:$request->department]);
+			$article->monitor->desktop->cpus->article->update(['department_id'=>($request->departmento)?$department->id:$request->department]);
+		}
+		if ($article->cpus) {
+			$article->cpus->desktop->update(['department_id'=>($request->departmento)?$department->id:$request->department]);
+			$article->cpus->desktop->monitor->article->update(['department_id'=>($request->departmento)?$department->id:$request->department]);
+		}
 		return back()->with('succes','Se le ha asignado un departamento con exito!');
 	}
 }

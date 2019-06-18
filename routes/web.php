@@ -35,6 +35,7 @@ Route::resource('expert','PersonController')->except([
 ]);
 
 /*--- REPORTES-PDF ---*/
+Route::put('/reporte/{aticulo}','OtherController@crearReporte');
 Route::get('/report/comprobante/{aticulo}','OtherController@reportar');
 Route::get('/report/reportarPDF/{aticulo}','OtherController@pdf');
 Route::get('/report/reportInvent/{type}','OtherController@reportInventory')->name('reporte.inventory');

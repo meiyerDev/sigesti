@@ -47,8 +47,8 @@ class Cpus extends Eloquent
 		return $this->belongsTo(\App\Models\Article::class);
 	}
 
-	public function desktops()
+	public function desktop()
 	{
-		return $this->hasMany(\App\Models\Desktop::class, 'cpu_id');
+		return $this->hasOne(\App\Models\Desktop::class, 'cpu_id');
 	}
 }
