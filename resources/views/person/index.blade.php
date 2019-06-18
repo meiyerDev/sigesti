@@ -26,14 +26,22 @@
 	</div>
 	@endforeach
 	@endif
-
+	<div id="error">
+		
+	</div>
 	{{-- TABLA DE DATOS --}}
 	<div class="card mt-5">
 		<div class="card-header d-flex justify-content-between">
 			<h4>Técnicos</h4>
-			<button type="button" class="btn btn-primary btn-md" data-toggle="modal" data-target="#modalNuevoTecnico">
-				<i class="fas fa-plus mr-2"></i>Nuevo
-			</button>
+			<div class="input-group col-md-8 col-lg-4">
+				<div class="input-group-prepend" id="butaddon">
+					<button type="button" class="btn btn-success" data-toggle="modal" data-target="#modalNuevoTecnico">
+						<i class="fas fa-plus mr-2"></i>Nuevo
+					</button>
+					<button class="btn btn-primary" id="butSearchPerson" type="button"><i class="fas fa-plus mr-2"></i>Buscar</button>
+				</div>
+				<input type="text" class="form-control " placeholder="Ingrese Cedula.." aria-label="Recipient's username" aria-describedby="butaddon" id="inputSearch">
+			</div>
 		</div>
 		<div class="card-body">
 			<table class="table table-hover">
@@ -141,6 +149,13 @@
 						</div>
 					</div>
 					<div class="form-row mb-3">
+						<div class="col-12 mb-2">
+							<label for="user">Tipo de Usuario</label>
+							<select value="{{old('user')}}" name="role" class="form-control form-control-lg">
+								<option value="2">Técnico</option>
+								<option value="3">Jefe Técnico</option>
+							</select> 
+						</div>
 						<div class="col">
 							{{--  <div class="form-row form-group{{ $errors->has('user') ? ' has-error' : '' }}"> --}}
 								<label for="user">Usuario</label>
@@ -263,5 +278,23 @@
 		</div>
 	</div>
 	{{-- END-MODAL --}}
+	<div class="modal fade" id="modalInfoPerson" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel">INFORMACIÓN DE TÉCNICO</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body" id="bodyInfoReques">
+					
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+				</div>
+			</form>
+		</div>
+	</div>
 
 	@include('layouts.footer')

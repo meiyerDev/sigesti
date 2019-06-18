@@ -5,16 +5,17 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Requests\DatosRequest;
 use Validator;
-use App\Person;
-use App\Responsable;
-use App\Department;
-use App\Article;
-use App\Expert;
-use App\Monitor;
-use App\Cpu;
-use App\Cartridge;
-use App\Desktop;
-use App\Report;
+use App\Models\Person;
+use App\Models\Responsable;
+use App\Models\Department;
+use App\Models\Article;
+use App\Models\Expert;
+use App\Models\Monitor;
+use App\Models\Cpu;
+use App\Models\Cartridge;
+use App\Models\Desktop;
+use App\Models\Request as Req;
+use App\Models\Report;
 
 class ReportController extends Controller
 {
@@ -74,76 +75,77 @@ class ReportController extends Controller
 			]);
 		}
 
-		if ($request->department == 'nuevo')
-		{
-			$department = Department::create([
-				'department' => $request->departmento,
-				'firstname_director' => $request->firstname_director,
-				'lastname_director' => $request->lastname_director,
-				'phone' => $request->phoneDep
-			]);
-		}
+		// if ($request->department == 'nuevo')
+		// {
+		// 	$department = Department::create([
+		// 		'department' => $request->departmento,
+		// 		'firstname_director' => $request->firstname_director,
+		// 		'lastname_director' => $request->lastname_director,
+		// 		'phone' => $request->phoneDep
+		// 	]);
+		// }
 
-		$type    = $request->type;
-		$article = Article::create([
-			'model' 		 => $request->model,
-			'brand' 		 => $request->brand,
-			'serial' 		 => $request->serial,
-			'observation'	 => $request->observation,
-			'responsable_id' => ( $request->responsable == 'nuevo' ) ? $respon->id : $request->responsable,
-			'department_id'  => ( $request->department  == 'nuevo' ) ? $department->id : $request->department,
-			'type' 			 => $request->type,
-			'name_otro'		 => ($request->name_otro)?$request->name_otro:''
-		]);
+		// $type    = $request->type;
+		// $article = Article::create([
+		// 	'model' 		 => $request->model,
+		// 	'brand' 		 => $request->brand,
+		// 	'serial' 		 => $request->serial,
+		// 	'observation'	 => $request->observation,
+		// 	'responsable_id' => ( $request->responsable == 'nuevo' ) ? $respon->id : $request->responsable,
+		// 	'department_id'  => ( $request->department  == 'nuevo' ) ? $department->id : $request->department,
+		// 	'type' 			 => $request->type,
+		// 	'name_otro'		 => ($request->name_otro)?$request->name_otro:''
+		// ]);
+
 		$report = Report::create([
 			'article_id' => $article->id,
 			'request'    => $request->requested,
 		]);
 
-		if ($type == 'Monitor' || $type == 'Monitor-Desktop')
-		{
-			$monitor = Monitor::create([
-				'article_id' => $article->id,
-				'inche' 	 => $request->inche,
-			]);
-		}
+		// if ($type == 'Monitor' || $type == 'Monitor-Desktop')
+		// {
+		// 	$monitor = Monitor::create([
+		// 		'article_id' => $article->id,
+		// 		'inche' 	 => $request->inche,
+		// 	]);
+		// }
 
-		if ($type == 'Cpu')
-		{
-			$cpu = Cpu::create([
-				'ram' 		   => $request->ram,
-				'processor'    => $request->processor,
-				'so' 		   => $request->so,
-				'memory_video' => ($request->memory_video)?$request->memory_video:'',
-				'article_id'   => $article->id
-			]);
-		}
+		// if ($type == 'Cpu')
+		// {
+		// 	$cpu = Cpu::create([
+		// 		'ram' 		   => $request->ram,
+		// 		'processor'    => $request->processor,
+		// 		'so' 		   => $request->so,
+		// 		'memory_video' => ($request->memory_video)?$request->memory_video:'',
+		// 		'article_id'   => $article->id
+		// 	]);
+		// }
 
 		if ($type == 'Monitor-Desktop')
 		{
-			$article_cpu = Article::create([
-				'model' 		 => $request->model_cpu,
-				'brand' 		 => $request->brand_cpu,
-				'serial' 		 => $request->serial_cpu,
-				'observation' 	 => $request->observation_cpu,
-				'department_id'  => ( $request->department  == 'nuevo' ) ? $department->id : $request->department,
-				'responsable_id' => ( $request->responsable == 'nuevo' ) ? $respon->id : $request->responsable,
-				'type' 			 => 'Cpu-Desktop'
-			]);
+			// $article_cpu = Article::create([
+			// 	'model' 		 => $request->model_cpu,
+			// 	'brand' 		 => $request->brand_cpu,
+			// 	'serial' 		 => $request->serial_cpu,
+			// 	'observation' 	 => $request->observation_cpu,
+			// 	'department_id'  => ( $request->department  == 'nuevo' ) ? $department->id : $request->department,
+			// 	'responsable_id' => ( $request->responsable == 'nuevo' ) ? $respon->id : $request->responsable,
+			// 	'type' 			 => 'Cpu-Desktop'
+			// ]);
 
-			$cpu = Cpu::create([
-				'ram' 		   => $request->ram,
-				'processor'    => $request->processor,
-				'so' 		   => $request->so,
-				'memory_video' => $request->memory_video,
-				'article_id'   => $article_cpu->id
-			]);
+			// $cpu = Cpu::create([
+			// 	'ram' 		   => $request->ram,
+			// 	'processor'    => $request->processor,
+			// 	'so' 		   => $request->so,
+			// 	'memory_video' => $request->memory_video,
+			// 	'article_id'   => $article_cpu->id
+			// ]);
 
-			$desktop = Desktop::create([
-				'cpu_id' 		=> $cpu->id,
-				'monitor_id' 	=> $monitor->id,
-				'department_id' => $article->department_id
-			]);;
+			// $desktop = Desktop::create([
+			// 	'cpu_id' 		=> $cpu->id,
+			// 	'monitor_id' 	=> $monitor->id,
+			// 	'department_id' => $article->department_id
+			// ]);;
 
 			$report_cpu = Report::create([
 				'article_id'  => $article_cpu->id,
@@ -152,12 +154,12 @@ class ReportController extends Controller
 			]);
 		}
 
-		if ($type == 'Cartucho') {
-			$cartucho = Cartridge::create([
-				'code'	=>	$request->code,
-				'article_id'	=>	$article->id
-			]);
-		}
+		// if ($type == 'Cartucho') {
+		// 	$cartucho = Cartridge::create([
+		// 		'code'	=>	$request->code,
+		// 		'article_id'	=>	$article->id
+		// 	]);
+		// }
 
 
 		return redirect('home')->with('succes', 'Se ha registrado de manera exitosa!');
@@ -167,7 +169,7 @@ class ReportController extends Controller
 	{
 		$article    = Article::find($id);
 		$department = $article->department;
-		$respon 	= $article->responsable->person;
+		$respon 	= $article->request->responsable->person;
 		$expert 	= $article->report->expert->person;
 
 		return \Response::json(['article' => $article]);
@@ -204,14 +206,15 @@ class ReportController extends Controller
 
 	public function update(Request $request, $id)
 	{
-		// dd($request->cpu);
-
+		/*ASIGNAR TECNICO*/
 		if( $request->expert )
 		{
 			$article = Article::find($id);
 			$article->report->update([
 				'expert_id' => $request->expert_id
 			]);
+			$article->experts()->attach($request->expert_id);
+			$article->request->update(['expert_id' => $request->expert_id]);
 		}
 
 		return redirect('home')->with('succes','Se ha asignado el técnico de manera exitosa!');
@@ -232,13 +235,12 @@ class ReportController extends Controller
 
 		if ( $article->where('responsable_id', $article->responsable_id)->count() > 1 ):
 			$article->delete();
+		else:
+			$article->responsable->person->delete();
+		endif;
 
-	else:
-		$article->responsable->person->delete();
-	endif;
-
-	return back()->with('succes','Se ha eliminado el registro con exito!');
-	// return response()->json(['succes'=>'Se ha eliminado el registro con exito!', 200]);
-}
+		return back()->with('succes','Se ha eliminado el registro con exito!');
+		// return response()->json(['succes'=>'Se ha eliminado el registro con exito!', 200]);
+	}
 
 }

@@ -63,7 +63,7 @@
 							<span class="margin-3">Telefónica <input type="checkbox" id="telefonica"></span>
 							<span class="margin-3">Escrita <input type="checkbox" id="escrita"></span>
 						</td>
-						<td colspan="3">V-{{$article->responsable->person->identity}} - {{$article->responsable->person->first_name}} {{$article->responsable->person->last_name}}</td>
+						<td colspan="3">V-{{$article->request->responsable->person->identity}} - {{$article->request->responsable->person->first_name}} {{$article->request->responsable->person->last_name}}</td>
 					</tr>
 					<tr class="bg-light">
 						<td colspan="6" class="center"><span class="bold margin-3">Observaciones</span></td>

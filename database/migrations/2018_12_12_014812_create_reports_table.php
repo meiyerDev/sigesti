@@ -22,11 +22,12 @@ class CreateReportsTable extends Migration
             $table->enum('users', ['Instalacion','Configuracion','Monitoreo'])->nullable();
             $table->enum('cartucho',['Recarga','Mantenimiento'])->nullable();
             $table->text('description')->nullable();
+            $table->boolean('confirmed');
             $table->unsignedInteger('expert_id')->nullable();
             $table->timestamps();
 
             $table->foreign('article_id')->references('id')->on('articles')->onDelete('cascade');
-            $table->foreign('expert_id')->references('id')->on('experts');
+            $table->foreign('expert_id')->references('id')->on('experts')->onDelete('set null');
         });
     }
 

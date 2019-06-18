@@ -4,9 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Validator;
-use App\Department;
-use App\Article;
-use App\Expert;
+use App\Models\Department;
+use App\Models\Article;
+use App\Models\Expert;
 
 class DepartmentController extends Controller
 {

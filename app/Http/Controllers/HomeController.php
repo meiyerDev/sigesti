@@ -4,11 +4,12 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-use App\Report;
-use App\Article;
-use App\Expert;
-use App\Department;
-use App\Responsable;
+use App\Models\Report;
+use App\Models\Request as Req;
+use App\Models\Article;
+use App\Models\Expert;
+use App\Models\Department;
+use App\Models\Responsable;
 
 class HomeController extends Controller
 {
@@ -29,11 +30,11 @@ class HomeController extends Controller
 	 */
 	public function index(Request $request)
 	{
-		if ($request->user()->hasRole('admin'))
+		if ($request->user()->hasAnyRole(['admin','boss']))
 		{
 
 		$report 	  = Report::all();
-		$article 	  = Article::paginate(3);
+		$article 	  = Req::paginate(3);
 		$article_count 	  = Article::all()->count();
 		$departments  = Department::all();
 		$experts 	  = Expert::all();
@@ -52,10 +53,13 @@ class HomeController extends Controller
 		->with('responsables', $responsables);
 		// ->with('impresoras', $impresoras);
 		}else{
-			$expert = Expert::where('user_id',\Auth::user()->id)->first()->reports;
-
-			return view('reports.expertReport')
-			->with('experts', $expert)
+			$expert = Expert::where('user_id',\Auth::user()->id)->first();
+			$report = Req::where('expert_id',$expert->id)->paginate(3);
+			$responsables = Responsable::all();
+			
+			return view('home')
+			->with('report', $report)
+			->with('responsables', $responsables)
 			->with('i', 1);
 		}
 

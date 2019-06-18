@@ -16,6 +16,7 @@
 					<div class="modal-body">
 						{{csrf_field()}}
 						{{method_field('PATCH')}}
+						<input type="hidden" name="confirmed" value="1">
 						<div class="row">
 							<div class="col">
 								<div class="form-group">
@@ -121,16 +122,20 @@
 							</tr>
 						</thead>
 						<tbody>
-							@forelse($experts as $experto)
+							@forelse($experts->request as $experto)
 							<tr>
 								<th scope="row">{{$i++}}</th>
 								<td>{{$experto->article->type}}</td>
 								<td>{{$experto->article->model}}</td>
 								<td>{{ $experto->article->brand }}</td>
 								<td>{{ $experto->article->serial }}</td>
-								<td>{{ $experto->article->responsable->person->first_name }} {{ $experto->article->responsable->person->last_name }}</td>
-								<td>@if($experto->article->responsable->person->phone){{$experto->article->responsable->person->phone}} @else No posee @endif</td>
-								<td>{{$experto->article->observation}}</td>
+
+								<td>{{ $experto->responsable->person->first_name }} {{ $experto->responsable->person->last_name }}</td>
+								
+								<td>@if($experto->responsable->person->phone){{$experto->responsable->person->phone}} @else No posee @endif</td>
+								
+								<td>{{$experto->observation}}</td>
+								
 								<td>
 									<button class="btn btn-warning btn-sm reportar" data-toggle="modal" data-target="#modalReport" title="Reportar">
 										<i class="fas fa-edit"></i>

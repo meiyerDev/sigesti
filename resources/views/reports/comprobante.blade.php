@@ -89,15 +89,17 @@
 					</tr>
 					<tr class="tr">
 						<th>Departamento</th>
-						<td colspan="4">{{$article->department->department}}</td>
+						<td colspan="4">@if ($article->department)
+							{{$article->department->department}}
+						@else No Asignado. @endif</td>
 					</tr>
 					<tr class="tr">
 						<th>Observaciones</th>
-						<td colspan="4" class="ul">{{$article->observation}}</td>
+						<td colspan="4" class="ul">{{$article->request->observation}}</td>
 					</tr>
 					<tr class="tr">
 						<th>Solicitante</th>
-						<td colspan="4">{{$article->responsable->person->first_name}} {{$article->responsable->person->last_name}}</td>
+						<td colspan="4">{{$article->request->responsable->person->first_name}} {{$article->request->responsable->person->last_name}}</td>
 					</tr>
 				</tbody>
 				{{-- <tfoot>

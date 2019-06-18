@@ -17,6 +17,7 @@ class Report extends Model
 		'expert_id',
 		'created_at',
 		'update_at',
+		'confirmed'
 	];
 
 	public function article()

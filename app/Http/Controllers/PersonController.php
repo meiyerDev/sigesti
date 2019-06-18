@@ -5,14 +5,14 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Requests\ExpertRequest;
 use Validator;
-use App\User;
-use App\Role;
-use App\Person;
-use App\Responsable;
-use App\Expert;
-use App\Report;
-use App\Department;
-use App\Article;
+use App\Models\User;
+use App\Models\Role;
+use App\Models\Person;
+use App\Models\Responsable;
+use App\Models\Expert;
+use App\Models\Report;
+use App\Models\Department;
+use App\Models\Article;
 
 class PersonController extends Controller
 {
@@ -42,21 +42,7 @@ class PersonController extends Controller
 
 	public function store(ExpertRequest $request)
 	{
-		$role_user = Role::where('name', 'user')->first();
-		// $message = [
-		// 	'identity.unique' => 'La Cedula ingresada para el nuevo responsable ya está en uso'
-		// ];
-
-		// $validator = Validator::make($request->all(), [
-		// 	'identity' => 'unique:people,identity'
-		// ], $message);
-
-		// if ($validator->fails()) {
-		// 	return back()
-		// 	->withErrors($validator)
-		// 	->withInput();
-		// }
-
+		$role_user = Role::find($request->role);
 		
 		$user = User::create([
 			'name' => $request->first_name,
@@ -111,16 +97,7 @@ class PersonController extends Controller
 		}
 
 		// Validar inputs de Update Técnicos
-		$validator = Validator::make($request->all(),[
-			'first_name'    =>  ['required','string','min:3'],
-			'last_name'     =>  ['required','string','min:3'],
-			'phone'         =>  ['nullable','numeric','min:11'],
-		]);
-		if ($validator->fails()) {
-			return back()
-			->withErrors($validator)
-			->withInput();
-		}
+		
 		
 		$expert = Person::where('identity',$id)->first();
 		$expert->update([
@@ -157,6 +134,68 @@ class PersonController extends Controller
 		$person->delete();
 
 		return redirect('expert')->with('succes','Se ha eliminado de manera exitosa!');
+	}
+
+	// METODOS PERSONALES
+	public function busExpert($id)
+	{
+		$person = Person::where('identity',$id)->first();
+		if ($person!=null && $person->expert) {
+			$expert = $person;
+			$user = User::find($person->expert->user_id);
+		}else{
+			$expert = null;
+			$user = null;
+		}
+		return \Response::json([
+			'expert'=>$expert,
+			'user'=>$user
+		]);
+	}
+
+	public function editUser($id)
+	{
+		$user = User::find(\Auth::user()->id);
+
+		return view('person.editPerfil')->with('user',$user);
+	}
+
+	public function updateUser(Request $request)
+	{
+		$validator = Validator::make($request->all(), [
+			'identity' => ['required'],
+			'first_name' => ['required'],
+			'last_name' => ['required'],
+			'phone' => ['required'],
+		]);
+
+		if ($validator->fails()) {
+			return back()
+			->withErrors($validator)
+			->withInput();
+		}
+		$user = User::find(\Auth::user()->id);
+		if ($user->expert) {
+			$user->expert->person->update([
+				'identity' => $request->identity,
+				'first_name' => $request->first_name,
+				'last_name' => $request->last_name,
+				'phone' => $request->phone
+			]);
+		}
+		
+		if (!empty($request->password) && !empty($request->confirmPassword)) {
+			if ($request->password === $request->confirmPassword) {
+			$user->update([
+				'password'	=>	\Hash::make($request->password),
+			]);
+			}else{
+				return back()->with('success','Error verifique sus contraseñas!');
+			}
+		}
+
+		return back()->with('success','Se ha Actualizado con exito!');
+
 	}
 
 }
