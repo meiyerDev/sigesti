@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Expert;
 use App\Models\Article;
 use App\Models\Report;
-use App\Models\Reqcuest as Req;
+use App\Models\Request as Req;
 
 class OtherController extends Controller
 {
