@@ -133,7 +133,7 @@
 								<td>{{ $experto->responsable->person->first_name }} {{ $experto->responsable->person->last_name }}</td>
 								
 								<td>@if($experto->responsable->person->phone){{$experto->responsable->person->phone}} @else No posee @endif</td>
-								
+
 								<td>{{$experto->observation}}</td>
 								
 								<td>

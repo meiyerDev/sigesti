@@ -98,6 +98,7 @@ class OtherController extends Controller
 
 		$dat = ['responsable->person->first_name','department->department','type','report->expert->person->first_name', 'report->created_at'];
 		$data = ['Responsable','Departamento','Tipo Artículo','Técnico','Fecha de Registro'];
+		
 		return view('reports.reporteSolicitudes')
 		->with('datos',$a)
 		->with('data',$data)
@@ -108,6 +109,7 @@ class OtherController extends Controller
 	{
 		$tecnico = Expert::where('user_id',$id)->first();
 		$data = ['Artículo Reparado','Serial','Modelo','Marca','Dpt. Atendido','Fecha de Reparación'];
+		
 		return view('reports.reporteTecnico')
 		->with('datos',$tecnico)->with('data',$data)->with('title','LISTADO DE TRABAJO REALIZADO');
 	}

@@ -117,7 +117,6 @@
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
 					<button type="submit" id="downInfo" class="btn btn-success" value="">Descargar</button>
-
 				</div>
 			</div>
 		</div>

@@ -58,7 +58,6 @@ class Expert extends Eloquent
 	{
 		return $this->hasMany(\App\Models\Report::class);
 	}
-
 	public function request()
 	{
 		return $this->hasMany(\App\Models\Request::class);
