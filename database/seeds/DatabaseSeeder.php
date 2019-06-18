@@ -19,5 +19,7 @@ class DatabaseSeeder extends Seeder
 		$this->call(PersonTableSeeder::class);
 		// Los expertos necesitaran la persona previamente generada
 		$this->call(ExpertTableSeeder::class);
+		// para el departamento principal
+		$this->call(DepartmentDefault::class);
 	}
 }

@@ -20,13 +20,10 @@ class CreateArticlesTable extends Migration
             $table->string('brand',255);
             $table->enum('type',['Laptop','Impresora','Cartucho','Monitor','Cpu','Monitor-Desktop','Cpu-Desktop','Otro']);
             $table->string('name_otro',255)->nullable();
-            $table->string('observation',255)->nullable();
-            $table->unsignedInteger('department_id');
-            $table->unsignedInteger('responsable_id');
+            $table->unsignedInteger('department_id')->nullable();
             $table->timestamps();
         
-            $table->foreign('responsable_id')->references('id')->on('responsables')->onDelete('cascade');
-            $table->foreign('department_id')->references('id')->on('departments')->onDelete('cascade');
+            $table->foreign('department_id')->references('id')->on('departments')->onDelete('set null');
         });
     }
 
