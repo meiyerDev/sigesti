@@ -103,7 +103,7 @@ class InventoryController extends Controller
 
 		if ($type == 'Cpu')
 		{
-			$cpu = Cpu::create([
+			$cpu = Cpus::create([
 				'ram' 		   => $request->ram,
 				'processor'    => $request->processor,
 				'so' 		   => $request->so,

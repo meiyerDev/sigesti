@@ -72,13 +72,13 @@ class RequestsController extends Controller
 			'expert_id'  => $tecnico
 		]);
 
-		if ($article->type == 'Monitor-Desktop')
+		if ($article->type == 'Monitor-Desktop' || $article->type == 'Cpu-Desktop')
 		{
 			$report_cpu = Report::create([
-				'article_id'  => $article->monitor->desktop->cpus->article->id,
+				'article_id'  => ($article->type == 'Monitor-Desktop')?$article->monitor->desktop->cpus->article->id:$article->cpus->desktop->monitor->article->id,
 				'request' 	  => $request->requested,
 				'confirmed'	 =>	0,
-				'description' => ( $request->description ) ? $request->description : 'NULL',
+				'description' => ( $request->description ) ? $request->description : '',
 				'expert_id'   => $tecnico
 			]);
 		}
@@ -107,8 +107,10 @@ class RequestsController extends Controller
 		}else{
 			if ($a->monitor) {
 				$a->monitor->desktop->cpus->article->request->delete();
+				$a->monitor->desktop->cpus->article->report->delete();
 			}elseif ($a->cpus) {
 				$a->cpus->desktop->monitor->article->request->delete();
+				$a->cpus->desktop->monitor->article->report->delete();
 			}
 			$a->request->delete();
 			$a->report->delete();

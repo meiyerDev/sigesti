@@ -56,6 +56,7 @@
 				</tr>
 			</thead>
 			<tbody>
+				@php $i = 0 @endphp
 				@forelse ($datos->reports as $aritle)
 				@if ($aritle->confirmed != 0)
 				<tr>
@@ -66,7 +67,9 @@
 					<td>@if ($aritle->article->department) {{ $aritle->article->department->department }} @else No Asignado. @endif</td>
 					<td>{{ $aritle->updated_at }}</td>
 				</tr>
-				@else
+				@php $i+=1 @endphp
+				@elseif($i==0)
+				@php $i+=1 @endphp
 				<h3>Sin Reparaciones.</h3>
 				@endif
 

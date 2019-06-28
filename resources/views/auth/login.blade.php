@@ -18,6 +18,8 @@
 </style>
 </head>
 <body style="background-image: url({{asset('img/fondo.png')}});" class="body">
+	@include('layouts.help')
+	<button class="btn btn-danger ml-4 mt-3 col-1" data-toggle="modal" data-target="#modalHelp">¡ AYUDA !</button>
 
 	<div class="container mt-5 pt-5">
 		<div class="row d-flex justify-content-center page-header mb-3"><h1 style="background-color: #fff; font-weight: bold;font-family: Monaco,Georgia,Times,serif;">Sistema de Gestión de Soporte Técnico Informático</h1></div>
